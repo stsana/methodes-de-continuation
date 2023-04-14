@@ -1,0 +1,1362 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{Projet}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    
+
+    \hypertarget{rapport-de-projet-danalyse-numuxe9riquegroupe-4}{%
+\section{\texorpdfstring{{Rapport de Projet d'Analyse Numérique(Groupe
+4)}}{Rapport de Projet d'Analyse Numérique(Groupe 4)}}\label{rapport-de-projet-danalyse-numuxe9riquegroupe-4}}
+
+\hypertarget{thuxe8me-duxe9termination-du-ph-dun-acide-faible-et-muxe9thodes-de-continuation}{%
+\subsection{\texorpdfstring{{Thème: Détermination du pH d'un acide
+faible et méthodes de
+continuation}}{Thème: Détermination du pH d'un acide faible et méthodes de continuation}}\label{thuxe8me-duxe9termination-du-ph-dun-acide-faible-et-muxe9thodes-de-continuation}}
+
+\#\#\#
+
+{Auteur: Sinclair TSANA (Etudiant en BAB2)\(\hspace{200px}\) Enseignant:
+Mr.~Christophe TROESTLER}
+
+    \hypertarget{objectifs-du-projet}{%
+\subsection{\texorpdfstring{\textbf{Objectifs du
+projet:}}{Objectifs du projet:}}\label{objectifs-du-projet}}
+
+Dans ce projet, il est question d'aborder un problème concret grâce aux
+techniques numériques vues au cours qui pourrons être adaptées de
+manière à répondre à la série des 11 questions proposées.
+
+\hypertarget{ruxe9sultats-attendues}{%
+\subsection{\texorpdfstring{\textbf{Résultats
+attendues:}}{Résultats attendues:}}\label{ruxe9sultats-attendues}}
+
+\begin{quote}
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Un bref rapport écrit qui résume les développements mathématiques et
+  les solutions apportées aux problèmes posées
+\item
+  Les conclusions des expériences numériques.
+\end{enumerate}
+\end{quote}
+
+\textbf{Note:} Ce \href{https://jupyter.org/}{notebook} constitut une
+réponse à ces deux points. Nous y présenterons à la fois le
+\texttt{code\ python} ainsi que les détails de nos développements
+mathématiques.
+
+    \hypertarget{importation-des-librairies-nuxe9cessaires}{%
+\subsection{\texorpdfstring{\textbf{Importation des librairies
+nécessaires}}{Importation des librairies nécessaires}}\label{importation-des-librairies-nuxe9cessaires}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}   \PY{c+c1}{\PYZsh{} pour les representations graphiques}
+\PY{k+kn}{import} \PY{n+nn}{math}                       \PY{c+c1}{\PYZsh{} contient les fonctions mathematiques usuels tels que log, sin, etc...}
+\PY{k+kn}{import} \PY{n+nn}{random}
+\PY{k+kn}{import} \PY{n+nn}{array}
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}                \PY{c+c1}{\PYZsh{} pour les calculs numeriques}
+\PY{k+kn}{from} \PY{n+nn}{sympy} \PY{k+kn}{import} \PY{o}{*}               \PY{c+c1}{\PYZsh{} pour les calculs symboliques}
+\PY{k+kn}{from} \PY{n+nn}{math} \PY{k+kn}{import} \PY{n}{log10}
+\PY{k+kn}{from} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{optimize} \PY{k+kn}{import} \PY{n}{brentq} 
+\PY{k+kn}{from} \PY{n+nn}{scipy}\PY{n+nn}{.}\PY{n+nn}{integrate} \PY{k+kn}{import} \PY{n}{solve\PYZus{}ivp}
+\PY{k+kn}{from} \PY{n+nn}{numpy}\PY{n+nn}{.}\PY{n+nn}{linalg} \PY{k+kn}{import} \PY{n}{inv}
+\end{Verbatim}
+\end{tcolorbox}
+
+    On s'intéresse à la variation du pH d'une solution aqueuse d'un acide
+faible AH (formé d'un atome d'hydrogène H et d'une autre partie notée A)
+en fonction de \(−log_{10}c\) où \(c >0\) représente la concentration de
+l'acide. L'analyse de ce problème conduit aux équations suivantes :
+
+\[
+\left\{
+    \begin{array}{ll}
+        [H_3O^+][OH^-]=k_e \hspace{100px}    (1) \\
+        [H_3O^+]=[OH^-]+[A^-]  \hspace{65px}(2) \\
+        [AH]k_a=[A^-][H_3O^+] \hspace{80px} (3) \\
+        [AH]+[A^-]=c        \hspace{125px}   (4) 
+    \end{array}
+\right.
+\] \#\# \textbf{Question 1} \#\#\# \textbf{1.a) Détermination du
+polynôme}
+
+    On procède par élimination successive de \([OH^-], [A^-]\) et \([AH]\)
+des équations ci-dessus.
+
+\((1)\Rightarrow[OH^-]=\frac{k_e}{[H_3O^+]}\)
+
+Dans (2) on a:
+\(\hspace{40px}[H_3O^+]=\frac{k_e}{[H_3O^+]}+[A^-] \iff[A^-]=[H_3O^+]-\frac{k_e}{[H_3O^+]} \hspace{40px}(*)\)
+
+Dans (3) on a: \(\hspace{40px}[AH]=\frac{1}{k_a}([H_3O^+]^2-k_e\)
+
+Dans (4) on a:
+\(\hspace{40px}[A^-]=c-\frac{1}{k_a}([H_3O^+]^2-k_e)\hspace{40px}(**)\)
+
+\((*)\) et \((**)\) donnent:
+\(\hspace{40px}[H_3O^+]-\frac{k_e}{[H_3O^+]}=c-\frac{1}{k_a}([H_3O^+]^2-k_e)\)
+
+En multipliant par \(k_a[H_3O^+]\), on obtient:
+\(\hspace{40px}k_a[H_3O^+]^2-k_ak_e = ck_a[H_3O^+]-[H_3O^+]^3+k_e[H_3O^+]\)
+
+\(\hspace{250px}\iff [H_3O^+]^3+k_a[H_3O^+]-(ck_a[H_3O^+]+k_e[H_3O^+])-k_ak_e=0\)
+
+D'ou l'équation \(X^3+k_aX^2-(k_e+ck_a)X-k_ak_e=0\) Où X représente la
+concentration en \(H_3O^+\)
+
+    \hypertarget{montrons-que-le-polynuxf4me-p-possuxe8de-une-unique-racine-positive.}{%
+\subsubsection{\texorpdfstring{\textbf{Montrons que le polynôme P
+possède une unique racine
+positive.}}{Montrons que le polynôme P possède une unique racine positive.}}\label{montrons-que-le-polynuxf4me-p-possuxe8de-une-unique-racine-positive.}}
+
+On a:\(\hspace{40px}P(x) = x^3+k_ax^2-(k_e+ck_a)x-k_ak_e\)
+
+Trouver les racines de P c'est résoudre l'équation
+\(x^3+k_ax^2-(k_e+ck_a)x-k_ak_e=0\)
+
+\(P(x)=0 \iff x=(-k_ax^2+(ck_a+k_e)x+k_ak_e)^{1/3}\)
+
+Posons \(\hspace{40px}f(x)=-k_ax^2+(ck_a+k_e)x+k_ak_e\)
+
+\begin{itemize}
+\item
+  \textbf{Etudions les variations de la fonction \(f\)}
+
+  On a: \(\hspace{40px}f^{'}(x)=-2k_ax+ck_a+k_e\)
+
+  \$f\^{}\{'\}(x)=0
+  \iff x=x\_1=\frac{ck_a+k_e}{k_a}\textgreater{}\frac{k_e}{k_a}\textgreater{}0\hspace{40px},
+  \hspace{40px}f\^{}\{"\}(x)=-2k\_a\textless{}0 \$ pour tout x réel
+  positif.
+
+  Ainsi \(\forall x\geq 0\), on a \(f^{'}(x)\leq ck_a+k_e\hspace{40px}\)
+  et \(\hspace{40px}\forall x\in [0,x_1]\), on a
+  \(k_ak_e\leq f(x)\leq f(x_1)\)
+
+  Posons \(F(x)=(f(x))^{1/3}\), on a
+  \(F^{'}(x)=\frac{1}{3}f^{'}(x)(f(x))^{-2/3}\leq \frac{1}{3}(ck_a+k_e)(f(x))^{-2/3}\)
+\end{itemize}
+
+Or, f est à valeurs strictement positives sur \([0,x_1]\) et la fonction
+\(x:\longmapsto x^{-2/3}\) étant décroissante sur \(]0,+\infty[\), donc
+la fonction \(g:x\longmapsto (f(x))^{-2/3}\) est bornée su \([0,x_1]\).
+Pour tout \(0\leq x \leq x_1\), on a \(g(0)\geq g(x) \geq g(x_1)\). Donc
+g est majorée sur \([0,x_1]\) par: \(g(0)=(f(0))^{-2/3}\) et on a
+\(f(0)=k_ak_e\).
+
+Ce qui nous donne \(F^{'}(x)\leq K\) où
+\(K=\frac{1}{3}(ck_a+k_e)(k_ak_e)^{-2/3}\).
+
+Ainsi, d'après le
+\href{https://fr.wikipedia.org/wiki/Th\%C3\%A9or\%C3\%A8me_des_accroissements_finis?oldformat=true}{\textbf{Théorème
+des Accroissements Finis}}, on a :
+
+\(\forall x,y \in [0,x_1] \hspace{40px} \lvert F(x)-F(y) \rvert \leq K\lvert x-y \rvert\)
+
+\(K\leq 1 \iff \frac{1}{3}.(ck_a+k_e)(k_ak_e)^{-2/3}\leq 1 \iff ck_a+k_e \leq 3(k_ak_e)^{2/3}\iff c\leq \frac{3}{k_a}.((k_ak_e)^{2/3}-k_e)\)
+
+Posons \(c_1 = \frac{3}{k_a}.((k_ak_e)^{2/3}-k_e)\)
+
+Donc la fonction F est K-Lipschitzienne sur \([0,x_1]\) et en
+particulier elle est contractant sur \([0,x_1]\) lorsque
+\(c\in [0, c_1]\)
+
+Il en découle que F admet un unique point fixe. Autrement dit l'équation
+\(F(x)=x\), qui est équivalente à \(P(x)=0\), admet une unique solution
+sur \([0,x_1]\)
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Quelques valeurs particulières}
+\PY{n}{k\PYZus{}a} \PY{o}{=} \PY{l+m+mf}{1.8}\PY{o}{*}\PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{5}\PY{p}{)}     \PY{c+c1}{\PYZsh{} Constante d’acidité  propre à l’acide}
+\PY{n}{k\PYZus{}e} \PY{o}{=} \PY{l+m+mf}{1.0116}\PY{o}{*}\PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{14}\PY{p}{)} \PY{c+c1}{\PYZsh{} La constante ionique de l’eau}
+\PY{n}{c1} \PY{o}{=} \PY{p}{(}\PY{l+m+mi}{3}\PY{o}{/}\PY{n}{k\PYZus{}a}\PY{p}{)}\PY{o}{*}\PY{p}{(}\PY{p}{(}\PY{n}{k\PYZus{}a}\PY{o}{*}\PY{n}{k\PYZus{}e}\PY{p}{)}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{l+m+mi}{2}\PY{o}{/}\PY{l+m+mi}{3}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{k\PYZus{}e}\PY{p}{)} \PY{c+c1}{\PYZsh{} tels que posée ci\PYZhy{}dessus}
+\PY{n}{x1\PYZus{}c1} \PY{o}{=} \PY{n}{c1} \PY{o}{+} \PY{n}{k\PYZus{}e}\PY{o}{/}\PY{n}{k\PYZus{}a}    \PY{c+c1}{\PYZsh{} valeur de x1 pour c\PYZlt{}=c1}
+\PY{n}{c1}\PY{p}{,} \PY{n}{x1\PYZus{}c1}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(5.1857032777617826e-08, 5.241903277761783e-08)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{b-algorithme-de-horner-pour-uxe9valuer-p}{%
+\subsubsection{\texorpdfstring{\textbf{1.b) Algorithme de Horner pour
+évaluer
+P}}{1.b) Algorithme de Horner pour évaluer P}}\label{b-algorithme-de-horner-pour-uxe9valuer-p}}
+
+    On considère le polynôme \(P(x)=a_nx^n+a_{n-1}x^{n-1}+...+a_1x^1+a_0\)
+
+\textbf{La
+\href{https://en.wikipedia.org/wiki/Horner\%27s_method?oldformat=true}{méthode
+de Horner} consiste a écrire P(x) sous la forme \(P_1(x).x+a_0\) et de
+repéter cette opération sur \(P_1\) et ainsi de suite jusqu'a obtenir le
+polynôme constant \(P_n(x)=a_n\)}. Son implémentation en python est la
+suivante:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{horner}\PY{p}{(}\PY{n}{A}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{} A est le vecteur contenant les coefficients (a\PYZus{}i)\PYZus{}\PYZob{}i=0...n\PYZcb{}}
+    \PY{n}{n} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{A}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+    \PY{n}{p} \PY{o}{=} \PY{n}{A}\PY{p}{[}\PY{n}{n}\PY{p}{]}
+    \PY{n}{i} \PY{o}{=} \PY{n}{n}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{n}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+        \PY{n}{p} \PY{o}{=} \PY{n}{p}\PY{o}{*}\PY{n}{x} \PY{o}{+} \PY{n}{A}\PY{p}{[}\PY{n}{i}\PY{p}{]}
+    \PY{k}{return} \PY{n}{p}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{c-test-de-lalgorithme-de-horner-et-muxe9thode-des-invariants}{%
+\subsubsection{\texorpdfstring{\textbf{1.c) Test de l'Algorithme de
+Horner et méthode des
+invariants}}{1.c) Test de l'Algorithme de Horner et méthode des invariants}}\label{c-test-de-lalgorithme-de-horner-et-muxe9thode-des-invariants}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{c} \PY{o}{=} \PY{n}{random}\PY{o}{.}\PY{n}{uniform}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)} \PY{c+c1}{\PYZsh{} On génère un nbre aléatoire entre 0 et 1 pour tester notre fonction}
+\PY{n}{A} \PY{o}{=} \PY{p}{[}\PY{o}{\PYZhy{}}\PY{n}{k\PYZus{}a}\PY{o}{*}\PY{n}{k\PYZus{}e}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{p}{(}\PY{n}{k\PYZus{}e}\PY{o}{+}\PY{n}{c}\PY{o}{*}\PY{n}{k\PYZus{}a}\PY{p}{)}\PY{p}{,} \PY{n}{k\PYZus{}a}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{horner}\PY{p}{(}\PY{n}{A}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{)}\PY{o}{==} \PY{o}{\PYZhy{}}\PY{n}{k\PYZus{}a}\PY{o}{*}\PY{n}{k\PYZus{}e} \PY{c+c1}{\PYZsh{} on teste l\PYZsq{}image de 0}
+\PY{n}{horner}\PY{p}{(}\PY{n}{A}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{==} \PY{n+nb}{sum}\PY{p}{(}\PY{n}{A}\PY{p}{)}   \PY{c+c1}{\PYZsh{} on teste l\PYZsq{}image de 1}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+True
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{muxe9thode-des-invariants}{%
+\subsubsection{\texorpdfstring{\textbf{Méthode des
+invariants}}{Méthode des invariants}}\label{muxe9thode-des-invariants}}
+
+\textbf{Un invariant de boucle est une propriéte Q qui vérifie:} -
+\textbf{Est vraie avant l'entrée dans la boucle.} - \textbf{Est toujours
+vraie après chaque itération de la boucle.} - \textbf{Vaut la propriéte
+P desiree a la fin de l'exécution de la boucle.}
+
+\hypertarget{cas-de-lalgorithme-de-horner}{%
+\paragraph{\texorpdfstring{\textbf{Cas de l'Algorithme de
+Horner}}{Cas de l'Algorithme de Horner}}\label{cas-de-lalgorithme-de-horner}}
+
+Notons \(A_n=\{a_0,a_1,...,a_n\}\) et \(P_i = horner(A_i,x)\)
+\textgreater{} \textbf{Invariant de boucle:} A chaque itération i, on a:
+\(P_i=A_nx^{n-i}+A{_{n-i-1}}x^{n-1}+...+A_{i+1}x+A_i=\sum_{j=0}^{n-i}A_{n-j}x^{n-i-j}\)
+
+\hypertarget{preuve}{%
+\subparagraph{\texorpdfstring{\textbf{Preuve}:}{Preuve:}}\label{preuve}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Avant la boucle}, \(i = n\) \textgreater{} On a
+  \(P_i = \sum_{j=0}^{n-n}A_{n-j}x^{n-i-j}=A_n\)
+\item
+  Montrons que à chaque prochaine itération \(inew\), on a
+  \(horner(A_{inew},x)\Rightarrow horner(A_{iold},x)\hspace{10px}\) où
+  \$\hspace{10px}iold \$ est l'itération précédente
+\end{itemize}
+
+\begin{quote}
+\(P_{iold}= (A_nx^{n-iold}+A_{n-1}x^{n-iold-1}+...+A_{iold})x+A_{iold-1}\)
+\(= A_nx^{n-iold+1}+A_{n-1}x^{n-iold}+...+A_{iold}x+A_{iold-1}\)
+\(= A_nx^{n-inew}+A_{n-1}x^{n-inew-1}+...+A_{inew+1}x+A_{inew}\)
+\(=\sum_{j=0}^{n-inew}A_{n-j}x^{n-inew-j}\) \(=P_{inew}\)
+\end{quote}
+
+\begin{quote}
+Autrement dit, à chaque itération i, on a
+\(P_i = horner(A_i,x) \Rightarrow P_{i-1} = horner(A_{i-1},x)\)
+\end{quote}
+
+\begin{itemize}
+\tightlist
+\item
+  Après la boucle, \(i=0\) et on a bien
+  \(P_{0}(X)=a_nx^{n}+a_{n-1}x^{i-1}+...+a_{1}x+a_0\)
+\end{itemize}
+
+    \textbf{Les étapes de l'algorithme de Horner sont les suivantes:}
+
+\$ \textbackslash{} \left. \textbackslash{}begin\{array\}\{ll\}
+P\_\{n\}(X)=a\_nX \textbackslash{}
+P\_\{n-1\}(X)=P\_\{n\}X+a\_\{n-1\}=a\_\{n\}x+a\_\{n-1\} \textbackslash{}
+\vdots \textbackslash{}
+P\_\{1\}(X)=P\_\{2\}X+a\_\{1\}=a\_nx\textsuperscript{\{n-1\}+a\_\{n-2\}x}\{n-2\}+\ldots{}+a\_\{2\}x+a\_1\textbackslash{}
+P\_\{0\}(X)=P\_\{1\}X+a\_\{0\}=a\_nx\textsuperscript{\{n\}+a\_\{n-1\}x}\{n-1\}+\ldots{}+a\_\{1\}x+a\_0\textbackslash{}
+\textbackslash{}end\{array\} \right \} n-multiplications \$
+
+n décroit jusqu'a 0 et à la fin on a bien le résultat désiré
+\(P(X)= a_nx^{n}+a_{n-1}x^{n-1}+...+a_{1}x+a_0\) 
+
+    \hypertarget{d-valeurs-de-c0-en-fonction-de-k_e-et-k_a-pour-que-h_3oleqslant-1}{%
+\subsubsection{\texorpdfstring{\textbf{1.d) Valeurs de \(c>0\) en
+fonction de \(k_e\) et \(k_a\) pour que
+\([H_3O^+]\leqslant 1\)}}{1.d) Valeurs de c\textgreater{}0 en fonction de k\_e et k\_a pour que {[}H\_3O\^{}+{]}\textbackslash{}leqslant 1}}\label{d-valeurs-de-c0-en-fonction-de-k_e-et-k_a-pour-que-h_3oleqslant-1}}
+
+D'après la question (1-a), on a :
+
+\([A^-]=[H_3O^+]-\frac{k_e}{[H_3O^+]} \hspace{40px}(*)\)
+
+et \([A^-]=c-\frac{1}{k_a}([H_3O^+]^2-k_e)\hspace{40px}(**)\)
+
+\(\hspace{40px}[H_3O+]\leqslant 1 \iff \frac{1}{[H_3O+]}\geq 1 \iff \frac{k_e}{[H_3O+]}\geq k_e \iff -\frac{k_e}{[H_3O+]}\leqslant -k_e \iff [H_3O^+]-\frac{k_e}{[H_3O+]}\leqslant -k_e+[H_3O^+]\leqslant 1-k_e\)
+
+Ainsi,on a
+\(\hspace{40px}[H_3O^+]\leqslant 1 \iff [H_3O^+]-\frac{k_e}{[H_3O+]}\leqslant -k_e+[H_3O^+]\leqslant 1-k_e\)
+
+\((*)\) devient \(\hspace{40px}[A^-]\leqslant 1-k_e\)
+
+Dans \((**)\), on
+obtient:\(\hspace{40px}c-\frac{1}{k_a}([H_3O^+]^2-k_e)\leqslant 1-k_e\)
+
+\(\hspace{135px}\iff c\leqslant 1-k_e+\frac{1}{k_a}[H_3O^+]^2-\frac{k_e}{k_a}\)
+
+En majorant \([H_3O^+]\) par 1, on obtient
+\(c\leqslant 1-k_e+\frac{1}{k_a}-\frac{k_e}{k_a}=\frac{(1-k_e)(1+k_a)}{k_a}\)
+
+On a finalement: \textbf{\(c \in ]0,\frac{(1-k_e)(1+k_a)}{k_a}]\)}
+
+    \hypertarget{e-repruxe9sentation-du-polynuxf4me-p-sur-00.005-pour-c-in1.-0.10.0110-12}{%
+\subsubsection{\texorpdfstring{\textbf{e) Représentation du polynôme p
+sur {[}0;0.005{]} pour c
+\(\in\)\{\({1., 0.1,0.01,10^{-12}}\)\}}}{e) Représentation du polynôme p sur {[}0;0.005{]} pour c \textbackslash{}in\{\{1., 0.1,0.01,10\^{}\{-12\}\}\}}}\label{e-repruxe9sentation-du-polynuxf4me-p-sur-00.005-pour-c-in1.-0.10.0110-12}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{C} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{l+m+mf}{1.}\PY{p}{,}\PY{l+m+mf}{0.1}\PY{p}{,} \PY{l+m+mf}{0.01}\PY{p}{,} \PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{12}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+\PY{n}{coefs} \PY{o}{=} \PY{p}{[}\PY{p}{]} \PY{c+c1}{\PYZsh{} vecteur contenant les coefficients du polynôme pour les différentes valeurs de C}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{C}\PY{p}{:}
+    \PY{n}{res} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{n}{k\PYZus{}a}\PY{o}{*}\PY{n}{k\PYZus{}e}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{p}{(}\PY{n}{k\PYZus{}e}\PY{o}{+}\PY{n}{i}\PY{o}{*}\PY{n}{k\PYZus{}a}\PY{p}{)}\PY{p}{,} \PY{n}{k\PYZus{}a}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+    \PY{n}{coefs}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{res}\PY{p}{)}
+    \PY{n}{coefs}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{coefs}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+[array([-1.82088e-19, -1.80000e-05,  1.80000e-05,  1.00000e+00]),
+ array([-1.82088000e-19, -1.80000001e-06,  1.80000000e-05,  1.00000000e+00]),
+ array([-1.8208800e-19, -1.8000001e-07,  1.8000000e-05,  1.0000000e+00]),
+ array([-1.82088e-19, -1.01340e-14,  1.80000e-05,  1.00000e+00])]
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mf}{0.005}\PY{p}{,} \PY{l+m+mi}{100}\PY{p}{)}
+\PY{n}{px1} \PY{o}{=} \PY{p}{[}\PY{p}{]}\PY{p}{;}\PY{n}{px2} \PY{o}{=} \PY{p}{[}\PY{p}{]}\PY{p}{;}\PY{n}{px3} \PY{o}{=} \PY{p}{[}\PY{p}{]}\PY{p}{;}\PY{n}{px4} \PY{o}{=} \PY{p}{[}\PY{p}{]}\PY{p}{;} \PY{c+c1}{\PYZsh{} initialisation des vecteurs  qui recevront les valeurs des polynômes}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+    \PY{n}{px1}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{horner}\PY{p}{(}\PY{n}{coefs}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{n}{x}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+    \PY{n}{px2}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{horner}\PY{p}{(}\PY{n}{coefs}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{n}{x}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+    \PY{n}{px3}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{horner}\PY{p}{(}\PY{n}{coefs}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,}\PY{n}{x}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+    \PY{n}{px4}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{horner}\PY{p}{(}\PY{n}{coefs}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{,}\PY{n}{x}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+
+\PY{n}{px} \PY{o}{=} \PY{p}{[}\PY{n}{px1}\PY{p}{,}\PY{n}{px2}\PY{p}{,}\PY{n}{px3}\PY{p}{,}\PY{n}{px4}\PY{p}{]}
+\PY{n}{colors} \PY{o}{=} \PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{g}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{r}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{y}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+\PY{n}{labs} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{c=1.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{c=0.1}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{c=0.01}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{c=\PYZdl{}10\PYZca{}}\PY{l+s+s2}{\PYZob{}}\PY{l+s+s2}{\PYZhy{}12\PYZcb{}\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{)}\PY{p}{:}
+    \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n}{px}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{,}\PY{n}{color}\PY{o}{=}\PY{n}{colors}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{,}\PY{n}{label}\PY{o}{=}\PY{n}{labs}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}
+    
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{x}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{P(x)}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_21_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{f-courbe-du-ph-en-fonction-de--log_10c}{%
+\subsubsection{\texorpdfstring{\textbf{1.f) Courbe du PH en fonction de
+\({-log_{10}c}\)}}{1.f) Courbe du PH en fonction de \{-log\_\{10\}c\}}}\label{f-courbe-du-ph-en-fonction-de--log_10c}}
+
+    A partir de la suite \(x_{n+1}=x_n+h\frac{f'(x_n)}{f(x_n)}\), on écris
+une routine qui, avec un pas constant h, détermine le point de la
+prochaine itération.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{nextPoint}\PY{p}{(}\PY{n}{x0}\PY{p}{,}\PY{n}{fx0}\PY{p}{,}\PY{n}{fprim\PYZus{}x0}\PY{p}{,}\PY{n}{h}\PY{o}{=}\PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{10}\PY{p}{)}\PY{p}{)}\PY{p}{:} \PY{c+c1}{\PYZsh{} fonctionne dans notre cas à partir de h = 10**(\PYZhy{}3)}
+    \PY{n}{xnext} \PY{o}{=} \PY{n}{x0}\PY{o}{+}\PY{n}{h}\PY{o}{*}\PY{n}{fprim\PYZus{}x0}\PY{o}{/}\PY{n}{fx0}
+    \PY{k}{return} \PY{n}{xnext}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{C} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{100}\PY{p}{)}
+\PY{n}{coef3} \PY{o}{=} \PY{p}{[}\PY{p}{]} \PY{c+c1}{\PYZsh{} vecteur contenant le 3e coéfficient du polynôme pour les différentes valeurs de C}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{C}\PY{p}{:}
+    \PY{n}{coef3}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{(}\PY{n}{k\PYZus{}e}\PY{o}{+}\PY{n}{i}\PY{o}{*}\PY{n}{k\PYZus{}a}\PY{p}{)}\PY{p}{)}
+    \PY{n}{coef3}
+
+\PY{n}{racines} \PY{o}{=} \PY{p}{[}\PY{p}{]} 
+\PY{n}{n}\PY{o}{=}\PY{n+nb}{len}\PY{p}{(}\PY{n}{coef3}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+\PY{n}{xnext} \PY{o}{=} \PY{l+m+mi}{1}\PY{o}{+}\PY{l+m+mf}{1.0e\PYZhy{}15} \PY{c+c1}{\PYZsh{} on initialise par une valeur non nulle très proche de zero}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{n}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+    \PY{n}{f} \PY{o}{=} \PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{3}\PY{o}{+}\PY{n}{k\PYZus{}a}\PY{o}{*}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{\PYZhy{}}\PY{n}{coef3}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{*}\PY{n}{x}\PY{o}{\PYZhy{}}\PY{n}{k\PYZus{}a}\PY{o}{*}\PY{n}{k\PYZus{}e}
+    \PY{n}{fp} \PY{o}{=} \PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{l+m+mi}{3}\PY{o}{*}\PY{p}{(}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{k\PYZus{}a}\PY{o}{*}\PY{n}{x}\PY{o}{\PYZhy{}}\PY{n}{coef3}\PY{p}{[}\PY{n}{i}\PY{p}{]}
+    \PY{n}{xnext} \PY{o}{=} \PY{n}{nextPoint}\PY{p}{(}\PY{n}{xnext}\PY{p}{,}\PY{n}{f}\PY{p}{(}\PY{n}{xnext}\PY{p}{)}\PY{p}{,}\PY{n}{fp}\PY{p}{(}\PY{n}{xnext}\PY{p}{)}\PY{p}{)}
+    \PY{n}{res} \PY{o}{=} \PY{n}{brentq}\PY{p}{(}\PY{n}{f}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{n}{xnext}\PY{p}{)} 
+    \PY{n}{racines}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{res}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{x} \PY{o}{=} \PY{p}{[}\PY{o}{\PYZhy{}}\PY{n}{log10}\PY{p}{(}\PY{n}{r}\PY{p}{)} \PY{k}{for} \PY{n}{r} \PY{o+ow}{in} \PY{n}{racines}\PY{p}{]}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Courbe du PH en fonction de \PYZdl{}\PYZhy{}log\PYZus{}}\PY{l+s+si}{\PYZob{}10\PYZcb{}}\PY{l+s+s2}{(c)\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdl{}\PYZhy{}log\PYZus{}}\PY{l+s+si}{\PYZob{}10\PYZcb{}}\PY{l+s+s2}{(c)\PYZdl{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{PH}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_26_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \textbf{Explications:}
+
+\begin{quote}
+On remarque que PH est une fonction croissante de \(-log_{10}(c)\). Ce
+qui signifie que lorsque \(-log_{10}(c)\) augmente(ie. c diminue), le PH
+augmente aussi.
+\end{quote}
+
+\begin{quote}
+Ce qui \textbf{n'est pas logique d'un point de vue chimique} puisque
+pour un acide, le PH décroit en fonction de sa concentration. En effet,
+plus la concentration en ions oxonium est faible, plus le pH augmente et
+plus la solution est basique. Inversement, plus la concentration en ions
+oxonium est importante, plus le pH diminue et plus la solution est
+acide.
+\end{quote}
+
+    \hypertarget{g-preuve-des-propriuxe9tuxe9s-constatuxe9es-graphiquement}{%
+\subsubsection{\texorpdfstring{\textbf{1.g) Preuve des propriétés
+constatées
+graphiquement}}{1.g) Preuve des propriétés constatées graphiquement}}\label{g-preuve-des-propriuxe9tuxe9s-constatuxe9es-graphiquement}}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Continuité}:
+\end{itemize}
+
+Nous avons montré à la question (a) que pour tout réel
+\(c \in ]0,c_1]\), la fonction \(p(c,.)\) est Contractante sur
+\([0,x_1]\). Ainsi d'apres le théorème du point fixe sur \(\mathbb{R}\),
+il existe une application \(\gamma :]0,c_1]\longmapsto [0,x_1]\) telle
+que pour tout \(c\in ]0,c_1], \gamma (c)\) soit l'unique point fixe de
+\(p(c,.)\).
+
+De plus, comme la fonction \(c \longmapsto p(c,x)\) est continue pour
+tout \(x\in [0,1]\), on en déduit que la fonction \(\gamma\) est
+également continue .
+
+\begin{itemize}
+\item
+  \textbf{Monotonie}:
+\item
+  \textbf{Dérivabilité}:
+\end{itemize}
+
+    \hypertarget{preuve-que-ph-longrightarrow--log_10sqrtk_eapprox-7-lorsque-clongrightarrow-0}{%
+\subsubsection{\texorpdfstring{\textbf{Preuve que pH
+\(\longrightarrow -log_{10}\sqrt{k_e}\approx 7\) lorsque
+\(c\longrightarrow 0\)}}{Preuve que pH \textbackslash{}longrightarrow -log\_\{10\}\textbackslash{}sqrt\{k\_e\}\textbackslash{}approx 7 lorsque c\textbackslash{}longrightarrow 0}}\label{preuve-que-ph-longrightarrow--log_10sqrtk_eapprox-7-lorsque-clongrightarrow-0}}
+
+    Lorsque \(c\longrightarrow 0\), notre équation de départ devient
+\(X^3+k_{a}X^2-k_{e}X+k_ak_e=0\).
+
+Posons \(Q(X)=X^3+k_{a}X^2-k_{e}X+k_ak_e\), on remarque que
+\(Q(-k_a)=0\)
+
+Grace à cette racine, on obtient la forme factorisée suivante :
+\(Q(X)= (X+k_a)(X^2-k_e)\)
+
+Donc \(Q(X)=0 \iff X+k_a=0\) ou \(X^2-k_e=0\) \(\iff X=-k_a\) ou
+\(X= \pm \sqrt{k_e}\)
+
+Mais \(X>0\), on a donc \(X = \sqrt(k_e)\)
+
+Ainsi,lorsque \(c\longrightarrow 0\), on a
+\([H_3O^+] \longrightarrow \sqrt(k_e)\).
+
+Et comme \(pH = -log_{10}[H_3O^+]\)
+
+On en déduit que \(pH \longrightarrow -log_{10}\sqrt{k_e}\) lorsque
+\(c\longrightarrow 0\)
+
+    \hypertarget{question-2-adapdation-de-la-muxe9thode-du-point-fixe}{%
+\subsection{\texorpdfstring{\textbf{Question 2: Adapdation de la méthode
+du point
+fixe}}{Question 2: Adapdation de la méthode du point fixe}}\label{question-2-adapdation-de-la-muxe9thode-du-point-fixe}}
+
+    \begin{itemize}
+\tightlist
+\item
+  \textbf{Montrons que la suite \((x_n)_{n\in \mathbb{N}}\) est de
+  Cauchy:}
+\end{itemize}
+
+Soit \(x_0 \in B\), comme B est stable par \(\varphi(c,.)\) par
+défintiion de \(\varphi(c,.)\), on peut poser
+\(x_n = \varphi(c,x_{n-1})\) pour tout \(n \in \mathbb{N}^*\)
+
+On a alors:
+
+\(\left\lVert x_{n+1}-x_n \right\rVert = \left\lVert \varphi(c,x_n) -\varphi(c,x_{n-1})\right\rVert \leqslant L\left\lVert x_n-x_{n-1}\right\rVert\)
+
+On obtient par récurrence sur n que
+
+\(\left\lVert \varphi(c,x_{n+1}) -\varphi(c,x_{n})\right\rVert \leqslant L^n \left\lVert x_1-x_{0}\right\rVert\)
+
+Ainsi, pour tout \(n\in \mathbb{N}\) et \(k \in \mathbb{N}^*\), on a :
+
+\(\left\lVert x_{n+k} -x_{n})\right\rVert \leqslant \sum_{i=0}^{k-1} \left\lVert x_{n+i+1}-x_{n+i}\right\rVert\).
+
+\(\hspace{100px}\leqslant \sum_{i=0}^{k-1} L^{n+i}\left\lVert x_{1}-x_{0}\right\rVert\)
+
+\(\hspace{100px}\leqslant \left\lVert x_{1}-x_{0}\right\rVert \sum_{i=0}^{k-1} L^{n+i}\)
+
+\(\hspace{100px}\leqslant L^n\frac{1-L^k}{1-L}\left\lVert x_{1}-x_{0}\right\rVert \hspace{10px}\)
+
+\(\hspace{100px}\leqslant \frac{L^n}{1-L}\left\lVert x_{1}-x_{0}\right\rVert \longrightarrow 0\)
+quand n \(\longrightarrow +\infty\) car \(0<L<1\)
+
+Ainsi la suite \((x_n)_{n \in \mathbb{N}}\) est de Cauchy.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Convergence:}
+\end{itemize}
+
+Comme \(\mathbb{R}^n\) est complet, alors il existe
+\(x^* \in \mathbb{R}\) tel que \(x_n \longrightarrow x^*\).
+
+De plus comme B est fermé, cette limite \(x^* \in B\) et
+\(\forall n\in \mathbb{N}\), on a \(x_{n+1}=\varphi(c,x_n)\)
+
+Par ailleurs, en utilisant la continuité de \(\varphi(c,.)\) et en
+passant à la limite, on a
+\(x^*=lim_{n \longrightarrow +\infty}x_{n+1}=lim_{n \longrightarrow +\infty} \varphi (c,x_n)=\varphi (c, lim_{n \longrightarrow +\infty} x_n)=\varphi (c,x^*)\)
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Unicité:}
+\end{itemize}
+
+Soit \(L\in ]0,1[\) tel que:
+
+\(\forall c\in I, \forall x_1,x_2 \in B \left\lVert \varphi(c,x_1) -\varphi(c,x_2)\right\rVert \leqslant L\left\lVert x_1-x_2\right\rVert\)
+
+Supposons que x et y sont deux points fixes de \(\varphi (c,.)\), alors
+on a:
+
+\(\left\lVert x-y \right\lvert=\left\lVert \varphi (c,x)-\varphi(c,y) \right\lvert \leqslant L\left\lVert x-y \right\lvert\)
+ce qui implique \(\left\lVert x-y \right\lvert(1-L) \leqslant 0\)
+
+Mais on a \(1-L>0\) car \(L\in ]0,1[\)
+
+Donc \(\left\lVert x-y \right\lvert=0\) et donc x=y. D'ou l'unicité de
+\(x^*\)
+
+On peut ainsi définir la fonction \(\gamma:I\longrightarrow B\)
+
+\(c\longmapsto\) l'unique \(x^*\) tel que \(x^*=\varphi (c,x^*)\)
+
+    \hypertarget{question-3-montrons-que-la-fonction-varphi-vuxe9rifie-les-hypothuxe8ses-du-thuxe9oruxe8me-du-point-fixe}{%
+\subsection{\texorpdfstring{\textbf{Question 3: Montrons que la fonction
+\(\varphi\) vérifie les hypothèses du théorème du point
+fixe}}{Question 3: Montrons que la fonction \textbackslash{}varphi vérifie les hypothèses du théorème du point fixe}}\label{question-3-montrons-que-la-fonction-varphi-vuxe9rifie-les-hypothuxe8ses-du-thuxe9oruxe8me-du-point-fixe}}
+
+    On sait que pour tout \(c\in I\), la fonction \(\varphi(c,.)\) est
+continue sur B
+
+De plus, l'hypothèse (a) nous dit que \(\partial _x \varphi (c,x)\)
+existe en tout point \(c\in I\) et \(x\in B\)
+
+Ces deux hypothèses montrent que pour tout \(c\in I\) la fonction
+\textbf{\(\varphi(c,.)\) est de classe \(C^1\) sur B}
+
+Sous ces hypothèses, le \textbf{Théorème des Accroissement Finis} nous
+assure que pour tout \(x_1, x_2\in B\):
+
+\(\left\lVert \varphi (c,x_1)-\varphi(c,x_2) \right\lVert \leqslant \left\lVert x_1-x_2 \right\lVert \sup_{x\in intB}\left\lVert \partial _x \varphi(c,x) \right\lVert\)
+
+\(\hspace{150px}\leqslant \left\lVert x_1-x_2 \right\lVert \sup_{c\in I}(\sup_{x\in intB}\left\lVert \partial _x \varphi(c,x) \right\lVert)\)
+
+\$\hspace{150px}\textless{} \left\lVert x\_1-x\_2
+\right\lVert  \hspace{50px} \$ Car
+\(\sup_{c\in I}(\sup_{x\in intB}\left\lVert \partial _x \varphi(c,x) \right\lVert)<1\)
+d'après l'hypothèse (b)
+
+    \hypertarget{question-4-preuve-du-thuxe9oruxe8me-des-fonctions-implicites}{%
+\subsection{\texorpdfstring{\textbf{Question 4: Preuve du Théorème des
+fonctions
+implicites}}{Question 4: Preuve du Théorème des fonctions implicites}}\label{question-4-preuve-du-thuxe9oruxe8me-des-fonctions-implicites}}
+
+    \textbf{Etape 1:} Montrons que la fonction \(\varphi\) est
+différentiable dans un voisinage approprié de \((c_0,x_0)\).
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Montrons que la fonction \(\gamma = \varphi (c,.)\) est
+  Lipschitzienne}
+\end{itemize}
+
+Comme \(\frac{\partial f}{\partial x}(c,.)\) est continue en \(c_0\),
+alors \(\frac{\partial \varphi}{\partial x}(c,.)\) l'est aussi.
+
+Soit \(q \in ]0,1[\), on a ,par définition de la continuité de
+\(\frac{\partial \varphi}{\partial x}\) au point \(c_0\),qu'il existe
+\(r>0\) et \(R>0\) tel que:
+
+\(\forall x \in B, \left\lVert c-c_0 \right\lVert \leqslant r\),\(\left\lVert x-c_0 \right\lVert \leqslant R \implies \left\lVert \frac{\partial \varphi}{\partial x}(c,x)-\frac{\partial \varphi}{\partial x}(c_0,c_0)\right\lVert \leqslant q \hspace{50px}\)
+\((i)\)
+
+Par définition de la continuité de \(\gamma\) au point \(c_0\),on a que:
+
+Pour tout \$\epsilon \textgreater{}0, \$il existe \(\delta >0\) tel que:
+\(\left\lVert c-c_0 \right\lVert \leqslant \delta \implies \left\lVert\gamma (c)-\gamma (c_0)\right\lVert=\left\lVert \varphi (c,c_0)-\varphi (c_0,c_0)\right\lVert \leqslant \epsilon \hspace{50px}\)
+
+En particulier pour \(\epsilon = R(1-q)\), on a
+:\(\left\lVert c-c_0 \right\lVert \leqslant \delta \implies \left\lVert\gamma (c)-\gamma (c_0)\right\lVert=\left\lVert \varphi (c,c_0)-\varphi (c_0,c_0)\right\lVert \leqslant R(1-q) \hspace{50px}\)
+
+Posons \(r_0 = min(r,\delta)\),on a:
+
+\(\left\lVert c-c_0 \right\lVert \leqslant r_0\),\(\left\lVert x-c_0 \right\lVert \leqslant R \implies \left\lVert\gamma (x)-\gamma (c_0)\right\lVert \leqslant \left\lVert \varphi (c,x)-\varphi(c,c_0) \right\lVert +\left\lVert \varphi (c,c_0)-\varphi(c_0,c_0) \right\lVert\)
+
+\(\hspace{200px}\implies \left\lVert\gamma (c)-\gamma (c_0)\right\lVert\leqslant q\left\lVert x-c_0 \right\lVert +R(1-q) \hspace{80px}\)
+d'après \((i)\) et le TAF
+
+\(\hspace{200px}\implies \left\lVert\gamma (c)-\gamma (c_0)\right\lVert\leqslant qR+R(1-q)=R\)
+
+Ainsi,
+\(\left\lVert\gamma (c)-\gamma (c_0)\right\lVert _\infty= \sup{\{\left\lVert\varphi (c,x)-\varphi (c_0,c_0)\right\lVert, \left\lVert x-c_0 \right\lVert \leqslant r_0}\}\)
+
+Et pour tout \(x_1,x_2\in B(c_0,R)\), on a:
+
+\(\left\lVert\gamma (x_1)-\gamma (x_2) \right\lVert _\infty= \sup{\{\left\lVert\varphi (c,x_1)-\varphi (c,x_2)\right\lVert, \left\lVert x-c_0 \right\lVert \leqslant r_0}\}\)
+
+\(\hspace{130px}\leqslant q\sup{ \{ \left\lVert x_1 -x_2 \right\lVert, \left\lVert x-c_0 \right\lVert \leqslant r_0 \} }\)
+d'après (i) et le TAF
+
+\(\hspace{130px}\leqslant q \left\lVert x_1 -x_2 \right\lVert _\infty\)
+
+Donc la fonction \(\gamma\) est Lipschitzienne.
+
+La fonction \(\gamma\) est continue et dérivable pour tout
+\(c\in B(c_0,R)\).Ce qui nous permet de dire que la fonction \(\varphi\)
+est \textbf{différentiable} pour tout \((c,x)\in B(c_0,r)\)x\(B(c_0,R)\)
+
+\textbf{Etape 2:} montrons que \(\varphi\) est lipschitzienne.
+
+On a
+\(\varphi(c,x)=x-(\partial _x f(c_0,c_0))^{-1}(\frac{\partial f}{\partial x}(c,x))\)
+
+Ainsi, pour tout \((c,x)\in B(c_0,r)\) x
+\(B(c_0,R)\),\(\frac{\partial \varphi}{\partial x}(c,x)\) existe et on
+a:
+
+\(\frac{\partial \varphi}{\partial x}(c,x)=I_2-(\partial _x f(c_0,c_0))^{-1}(\frac{\partial f}{\partial x}(c,x))\)
+où \(I_2: \mathbb{R}^2 \longrightarrow \mathbb{R}\) est l'application
+identité.
+
+Au point \(c_0\), on a:
+\(\frac{\partial \varphi}{\partial x}(c_0,c_0)=I_2-(\partial _x f(c_0,c_0))^{-1}(\frac{\partial f}{\partial x}(c_0,c_0))=0\)
+
+Donc \(\frac{\partial \varphi}{\partial x}(c_0,c_0)=0\) et (i) devient:
+
+\(\forall x \in B \left\lVert c-c_0 \right\lVert \leqslant r,\left\lVert x-c_0 \right\lVert \leqslant R \implies \left\lVert \frac{\partial \varphi}{\partial x}(c,x)\right\lVert \leqslant q \hspace{50px}\)
+
+Ainsi d'après le Théorème des Accroissements Finis, on a:
+
+\(\forall x_1, x_2 \in B\),\(\left\lVert c-c_0 \right\lVert \leqslant r\),\$\left\lVert x-c\_0
+\right\lVert \leqslant R
+\implies \left\lVert \varphi (c,x\_1)-\varphi(c,x\_2)
+\right\lVert \leqslant q \left\lVert x\_1-x\_2 \right\lVert \$
+
+Donc la fonction \(\varphi\) est Lipschitzienne.
+
+On conclut que la fonction \(\varphi (c,x)\) vérifie (3)
+
+    \hypertarget{question-5preuve-dexistence-dun-prolongement-maximal-par-le-lemme-de-zorn}{%
+\subsection{\texorpdfstring{\textbf{Question 5:Preuve d'existence d'un
+prolongement maximal par le Lemme de
+Zorn}}{Question 5:Preuve d'existence d'un prolongement maximal par le Lemme de Zorn}}\label{question-5preuve-dexistence-dun-prolongement-maximal-par-le-lemme-de-zorn}}
+
+    Soit \(\gamma _0\) uner appliication telle que
+\(\forall c\in I_0, f(c,\gamma(c_0))=0\).
+
+Soit \(\gamma : I\longmapsto \mathbb{R}^N\) un prolongement de
+\(\gamma _0\), on a:
+
+\begin{quote}
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\tightlist
+\item
+  \(I \supseteq I_0\) 
+\item
+  \(\forall c\in I_0, \gamma(c)=\gamma _0(c)\)
+\end{enumerate}
+\end{quote}
+
+    Soit E l'ensemble des fonctions qui prolongent \(\gamma\).
+
+Munissons cet ensemble de la relation ``\(\subseteq\)'' de sorte que
+pour \(f,g \in E, f\subseteq g\) sinigfie qu'il existe un intervalle
+dans lequel \(f=g\)
+
+Alors \((E,\subseteq)\) ensemble inductif i.e pout tout \(i\neq j\) il
+existe \(\gamma _i\) et \(\gamma _j\) dans E tels que
+\(\gamma _i \subseteq \gamma _j\)
+
+Le
+\href{https://en.wikipedia.org/wiki/Zorn\%27s_lemma?oldformat=true}{lemme
+de Zorn} nous assure que l'ensemble E ainsi définit admet un élément
+maximal.
+
+    \hypertarget{question-6}{%
+\subsection{\texorpdfstring{\textbf{Question
+6:}}{Question 6:}}\label{question-6}}
+
+    Supposons qu'il existe deux extensions
+\(\gamma _1:I_1 \longmapsto \mathbb{R}^N\) et
+\(\gamma _2:I_2 \longmapsto \mathbb{R}^N\) de \(\gamma _0\); avec
+\(I_1, I_2\subset[0,1]\)
+
+Supposons que \(\gamma _1 \subseteq \gamma _2\)
+
+On a pour tout \((c,x)\in \Omega f(c,\gamma _1(c))=0\) et
+\(f(c,\gamma _2(c))=0\)
+
+Par la règle de dérivation en chaine, on obtient:
+
+\(\frac{\partial f}{\partial c}(c,\gamma _1(c))+\frac{\partial f}{\partial x}(c,\gamma _1(c)).\partial _c \gamma _1(c)=0\)
+
+et
+\(\frac{\partial f}{\partial c}(c,\gamma _2(c))+\frac{\partial f}{\partial x}(c,\gamma _2(c)).\partial _c \gamma _2(c)=0\)
+
+Equivaut à:
+
+\(\partial _c \gamma _1(c)=-(\frac{\partial f}{\partial x}(c,\gamma _1(c)))^{-1}(\frac{\partial f}{\partial c}(c,\gamma _1(c)))\)
+
+et
+\(\partial _c \gamma _2(c)=-(\frac{\partial f}{\partial x}(c,\gamma _2(c)))^{-1}(\frac{\partial f}{\partial c}(c,\gamma _2(c)))\)
+
+(Preuve non terminée)
+
+    \hypertarget{question-7}{%
+\subsection{\texorpdfstring{\textbf{Question
+7:}}{Question 7:}}\label{question-7}}
+
+    Sous les hypothèses du Théorème des Fonctions Implicites,
+
+En effet la fonction \(c\in I\longmapsto f(c,\gamma (c))\) étant
+différentiable comme composée de fonctions différentiables, la
+\href{https://fr.wikipedia.org/wiki/Th\%C3\%A9or\%C3\%A8me_de_d\%C3\%A9rivation_des_fonctions_compos\%C3\%A9es?oldformat=true}{règle
+de dérivation par chaine}(chain rule) assure qu'en tout point de
+\(\Omega\):
+
+\(\frac{\partial f}{\partial c}(c,\gamma (c))+\frac{\partial f}{\partial x}(c,\gamma (c)).\partial _c \gamma (c)=0 \iff \partial _c \gamma (c)=(\frac{\partial f}{\partial x}(c,\gamma (c)))^{-1}.\frac{\partial f}{\partial c}(c,c)\)
+
+    \hypertarget{question-8-routine-pour-la-ruxe9solution-de-ledo}{%
+\subsection{\texorpdfstring{\textbf{Question 8:} Routine pour la
+Résolution de
+l'EDO}{Question 8: Routine pour la Résolution de l'EDO}}\label{question-8-routine-pour-la-ruxe9solution-de-ledo}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{13}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{f} \PY{o}{=} \PY{k}{lambda} \PY{n}{c}\PY{p}{,}\PY{n}{x}\PY{p}{:} \PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{3}\PY{o}{+}\PY{n}{k\PYZus{}a}\PY{o}{*}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{\PYZhy{}}\PY{p}{(}\PY{n}{c}\PY{o}{*}\PY{n}{k\PYZus{}a}\PY{o}{+}\PY{n}{k\PYZus{}e}\PY{p}{)}\PY{o}{*}\PY{n}{x}\PY{o}{\PYZhy{}}\PY{n}{k\PYZus{}a}\PY{o}{*}\PY{n}{k\PYZus{}e}  \PY{c+c1}{\PYZsh{} Polynome P(c,x)}
+\PY{n}{dfdc} \PY{o}{=} \PY{k}{lambda} \PY{n}{c}\PY{p}{,}\PY{n}{x}\PY{p}{:} \PY{o}{\PYZhy{}}\PY{n}{k\PYZus{}a}\PY{o}{*}\PY{n}{x}                            \PY{c+c1}{\PYZsh{} dérivée partielle de P par rapport à c}
+\PY{n}{dfdx} \PY{o}{=} \PY{k}{lambda} \PY{n}{c}\PY{p}{,}\PY{n}{x}\PY{p}{:} \PY{l+m+mi}{3}\PY{o}{*}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{+}\PY{l+m+mi}{2}\PY{o}{*}\PY{n}{k\PYZus{}a}\PY{o}{*}\PY{n}{x}\PY{o}{\PYZhy{}}\PY{p}{(}\PY{n}{c}\PY{o}{*}\PY{n}{k\PYZus{}a}\PY{o}{+}\PY{n}{k\PYZus{}e}\PY{p}{)}        \PY{c+c1}{\PYZsh{} dérivée partielle de P par rapport à x}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{14}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{Routine}\PY{p}{(}\PY{n}{x0} \PY{o}{=} \PY{l+m+mi}{10}\PY{o}{*}\PY{o}{*}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{8}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+    \PY{k}{def} \PY{n+nf}{gama}\PY{p}{(}\PY{n}{c}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{p}{:}      \PY{c+c1}{\PYZsh{}définition de la fonction}
+        \PY{k}{if} \PY{n}{dfdx}\PY{p}{(}\PY{n}{c}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{o}{==}\PY{l+m+mi}{0}\PY{p}{:}    \PY{c+c1}{\PYZsh{} Traitement du cas ou dfdx n\PYZsq{}est pas inversible}
+            \PY{k}{try}\PY{p}{:}
+                \PY{n}{c} \PY{o}{=} \PY{n}{c} \PY{o}{\PYZhy{}} \PY{n+nb}{float}\PY{p}{(}\PY{n}{c}\PY{p}{)}\PY{o}{/}\PY{n}{dfdx}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+            \PY{k}{except} \PY{n+ne}{ZeroDivisionError}\PY{p}{:}
+                \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Erreur! \PYZhy{} dérivée nulle pour c = }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{c}\PY{p}{)}
+        \PY{k}{return} \PY{o}{\PYZhy{}}\PY{n}{dfdc}\PY{p}{(}\PY{n}{c}\PY{p}{,}\PY{n}{x}\PY{p}{)}\PY{o}{/}\PY{n}{dfdx}\PY{p}{(}\PY{n}{c}\PY{p}{,}\PY{n}{x}\PY{p}{)}
+    \PY{n}{points} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{)} \PY{c+c1}{\PYZsh{} points d\PYZsq{}évaluation}
+    \PY{n}{sol} \PY{o}{=} \PY{n}{solve\PYZus{}ivp}\PY{p}{(}\PY{n}{fun}\PY{o}{=}\PY{n}{gama}\PY{p}{,}\PY{n}{t\PYZus{}span}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{y0}\PY{o}{=}\PY{p}{[}\PY{n}{x0}\PY{p}{]}\PY{p}{,}\PY{n}{t\PYZus{}eval}\PY{o}{=}\PY{n}{points}\PY{p}{)}
+    \PY{k}{return} \PY{n}{sol}\PY{o}{.}\PY{n}{y}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{15}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{Routine}\PY{p}{(}\PY{p}{)}\PY{p}{;}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{16}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{c} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{)} \PY{c+c1}{\PYZsh{} points d\PYZsq{}évaluation}
+\PY{n}{gama} \PY{o}{=} \PY{n}{Routine}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{T}        \PY{c+c1}{\PYZsh{} transposée}
+\PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{c}\PY{p}{,} \PY{n}{gama}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{c}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Courbre des solutions}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_48_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{question-9-influence-des-paramuxe8tres-rtol-et-atol-de-scipy.integratesolve_ivp}{%
+\subsection{\texorpdfstring{\textbf{Question 9:} Influence des
+paramètres \texttt{rtol} et \texttt{atol} de
+\texttt{scipy.integrate:solve\_ivp}}{Question 9: Influence des paramètres rtol et atol de scipy.integrate:solve\_ivp}}\label{question-9-influence-des-paramuxe8tres-rtol-et-atol-de-scipy.integratesolve_ivp}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{f} \PY{o}{=} \PY{k}{lambda} \PY{n}{c}\PY{p}{,}\PY{n}{x}\PY{p}{:} \PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{3}\PY{o}{+}\PY{n}{k\PYZus{}a}\PY{o}{*}\PY{n}{x}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{o}{\PYZhy{}}\PY{p}{(}\PY{n}{c}\PY{o}{*}\PY{n}{k\PYZus{}a}\PY{o}{+}\PY{n}{k\PYZus{}e}\PY{p}{)}\PY{o}{*}\PY{n}{x}\PY{o}{\PYZhy{}}\PY{n}{k\PYZus{}a}\PY{o}{*}\PY{n}{k\PYZus{}e}
+\PY{n}{c} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{100}\PY{p}{)}
+\PY{n}{x}\PY{o}{=}\PY{n}{f}\PY{p}{(}\PY{n}{c}\PY{p}{,}\PY{n}{gama}\PY{p}{)}
+\PY{n}{x1} \PY{o}{=} \PY{n}{f}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{n}{gama}\PY{p}{)}
+\PY{n}{norm\PYZus{}f} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{x}\PY{p}{,}\PY{n+nb}{ord}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{norm\PYZus{}f\PYZus{}c1} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{x1}\PY{p}{,}\PY{n+nb}{ord}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{n}{norm\PYZus{}f}\PY{p}{,} \PY{n}{norm\PYZus{}f\PYZus{}c1}
+\end{Verbatim}
+\end{tcolorbox}
+
+            \begin{tcolorbox}[breakable, size=fbox, boxrule=.5pt, pad at break*=1mm, opacityfill=0]
+\prompt{Out}{outcolor}{18}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+(1.9735368185305545e-06, 2.1857547068173576e-07)
+\end{Verbatim}
+\end{tcolorbox}
+        
+    \hypertarget{question-10}{%
+\subsection{\texorpdfstring{\textbf{Question
+10:}}{Question 10:}}\label{question-10}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{57}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} Fonction pour determiner la matrice Jacobienne de h}
+\PY{k}{def} \PY{n+nf}{J}\PY{p}{(}\PY{n}{h}\PY{p}{,} \PY{n}{x}\PY{p}{,} \PY{n}{dx}\PY{o}{=}\PY{l+m+mf}{1e\PYZhy{}8}\PY{p}{)}\PY{p}{:}
+    \PY{n}{n} \PY{o}{=} \PY{n+nb}{len}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+    \PY{n}{func} \PY{o}{=} \PY{n}{h}\PY{p}{(}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)}
+    \PY{n}{jac} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{n}\PY{p}{,} \PY{n}{n}\PY{p}{)}\PY{p}{)}
+    \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{:}  \PY{c+c1}{\PYZsh{} compteur sur les colonnes}
+        \PY{n}{Dxj} \PY{o}{=} \PY{p}{(}\PY{n+nb}{abs}\PY{p}{(}\PY{n}{x}\PY{p}{[}\PY{n}{j}\PY{p}{]}\PY{p}{)}\PY{o}{*}\PY{n}{dx} \PY{k}{if} \PY{n}{x}\PY{p}{[}\PY{n}{j}\PY{p}{]} \PY{o}{!=} \PY{l+m+mi}{0} \PY{k}{else} \PY{n}{dx}\PY{p}{)}
+        \PY{n}{x\PYZus{}plus} \PY{o}{=} \PY{p}{[}\PY{p}{(}\PY{n}{xi} \PY{k}{if} \PY{n}{k} \PY{o}{!=} \PY{n}{j} \PY{k}{else} \PY{n}{xi} \PY{o}{+} \PY{n}{Dxj}\PY{p}{)} \PY{k}{for} \PY{n}{k}\PY{p}{,} \PY{n}{xi} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{]}
+        \PY{n}{jac}\PY{p}{[}\PY{p}{:}\PY{p}{,} \PY{n}{j}\PY{p}{]} \PY{o}{=} \PY{p}{(}\PY{n}{h}\PY{p}{(}\PY{n}{x\PYZus{}plus}\PY{p}{)} \PY{o}{\PYZhy{}} \PY{n}{func}\PY{p}{)}\PY{o}{/}\PY{n}{Dxj}
+    \PY{k}{return} \PY{n}{jac}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{newton}\PY{p}{(}\PY{n}{h}\PY{p}{,}\PY{n}{x0}\PY{p}{,} \PY{n}{tol}\PY{p}{,} \PY{n}{max\PYZus{}iter}\PY{p}{)}\PY{p}{:}
+    \PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{max\PYZus{}iter}\PY{p}{)}\PY{p}{:}
+        \PY{n}{hx0} \PY{o}{=} \PY{n}{h}\PY{p}{(}\PY{n}{x0}\PY{p}{)}
+        \PY{k}{if} \PY{n+nb}{abs}\PY{p}{(}\PY{n}{hx0}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{n}{tol}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{solution trouvée après }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ itérations.}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{n}\PY{p}{)}\PY{p}{)}
+            \PY{k}{return} \PY{n}{x0}
+        \PY{n}{Jhxn} \PY{o}{=} \PY{c+c1}{\PYZsh{} A revoir}
+        \PY{k}{if} \PY{n}{Jhxn} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Jacobienne Singulière. Pas de solution}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+            \PY{k}{return} \PY{k+kc}{None}
+        \PY{n}{xn} \PY{o}{=} \PY{n}{xn} \PY{o}{\PYZhy{}} \PY{n}{hxn}\PY{o}{/}\PY{n}{Jhxn}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Aucune solution trouvée après }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{ itérations}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{max\PYZus{}iter}\PY{p}{)}\PY{p}{)}
+    \PY{k}{return} \PY{k+kc}{None}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{question-11}{%
+\subsection{\texorpdfstring{\textbf{Question
+11:}}{Question 11:}}\label{question-11}}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} non terminee}
+\PY{k}{def} \PY{n+nf}{Newton}\PY{p}{(}\PY{n}{h}\PY{p}{,}\PY{p}{(}\PY{n}{x0}\PY{p}{)}\PY{p}{,} \PY{n}{tol}\PY{p}{,} \PY{n}{max\PYZus{}iter}\PY{p}{)}\PY{p}{:}
+    \PY{n}{Jh} \PY{o}{=} \PY{c+c1}{\PYZsh{} matrice Jacobienne}
+    \PY{n}{Jhx0} \PY{o}{=} \PY{n}{Jh}\PY{p}{(}\PY{n}{x0}\PY{p}{)}
+    \PY{n}{xtild} \PY{o}{=} \PY{n}{Routine}\PY{p}{(}\PY{n}{x0}\PY{p}{)}   \PY{c+c1}{\PYZsh{} approximation à l\PYZsq{}ordre 0}
+    \PY{k}{for} \PY{n}{n} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{max\PYZus{}iter}\PY{p}{)}\PY{p}{:}
+        \PY{n}{x} \PY{o}{=} \PY{n}{xtild} \PY{o}{+} \PY{n}{hx0}\PY{o}{/}\PY{n}{Jh}\PY{p}{(}\PY{n}{xtild}\PY{p}{)}
+        \PY{n}{Jhxn} \PY{o}{=} \PY{n}{Jh}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{c+c1}{\PYZsh{} A revoir}
+        \PY{n}{hx} \PY{o}{=} \PY{n}{h}\PY{p}{(}\PY{n}{x}\PY{p}{)}
+        \PY{n}{norm\PYZus{}h} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linalg}\PY{o}{.}\PY{n}{norm}\PY{p}{(}\PY{n}{hx}\PY{p}{,} \PY{n+nb}{ord}\PY{o}{=}\PY{l+m+mi}{2}\PY{p}{)}
+        \PY{k}{if} \PY{n+nb}{abs}\PY{p}{(}\PY{n}{norm\PYZus{}h}\PY{p}{)} \PY{o}{\PYZgt{}} \PY{n}{tol}\PY{p}{:}
+            \PY{k}{continue}
+    \PY{k}{return} \PY{n}{x}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{conclusion}{%
+\subsubsection{\texorpdfstring{\textbf{Conclusion:}}{Conclusion:}}\label{conclusion}}
+
+Il convient de rappeller que ce travail est proposé en vue d'une
+évaluation par mes encadreurs. Il est donc possible qu'il y ai quelques
+coquilles. Merci pour votre comprehension.
+
+    \hypertarget{refuxe9rences}{%
+\subsubsection{\texorpdfstring{\textbf{Reférences:}}{Reférences:}}\label{refuxe9rences}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Cours \href{}{Introduction to Numerical Analysis and Statistical
+  Modeling} BAB2 Umons par Christophe Troestler\\
+\item
+  \href{https://pythonnumericalmethods.berkeley.edu/notebooks/Index.html}{Python
+  Programming and Numerical Methods - A Guide for Engineers and
+  Scientists} by Qingkai Kong, Timmy Siauw, Alexandre Bayen (Authors)
+\item
+  Earl A. Coddington, Norman Levinson - \href{}{Theory of ordinary
+  differential equations-R.E. Krieger} (1984)
+\item
+  Wikipedia
+  \href{https://en.wikipedia.org/wiki/Numerical_differentiation?oldformat=true}{Numerical
+  differentiation} et
+  \href{https://en.wikipedia.org/w/index.php?title=Numerical_methods_for_ordinary_differential_equations\&oldformat=true}{Numerical
+  methods for ordinary differential equations}
+\end{enumerate}
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{ }{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+
+\end{Verbatim}
+\end{tcolorbox}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
